@@ -1,2 +1,3 @@
-# plain-php-codespace
-Github codespace used for FMI-VT exercises
+# PHP Codespace für CLinDat 31 (mibeg Institute)
+
+Eine PHP-Spielwiese zum Programmieren und Ausprobieren
