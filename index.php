@@ -263,7 +263,7 @@ require_once "functions.php";
 // ];
 
 // $nums = [78, 60, 62, 68, 71, 68, 73, 85, 66, 64, 76, 63, 75, 76, 73, 68, 62, 73, 72, 65, 74, 62, 62, 65, 64, 68, 73, 75, 79, 73];
-// Aufgabe: PHP-Skript, das für dieses Array Maximum, Minimum und Durchschnitt ermittelt. Sie sollen nur eine höherwertige Funktion nutzen.
+// // Aufgabe: PHP-Skript, das für dieses Array Maximum, Minimum und Durchschnitt ermittelt. Sie sollen nur eine höherwertige Funktion nutzen.
 
 // var_dump(array_reduce(
 //     $nums, // 1. Array
@@ -304,3 +304,84 @@ require_once "functions.php";
 // foreach ($nums as $num) {
 //     file_put_contents("./data/dummy_data.txt", $num . PHP_EOL, FILE_APPEND);
 // }
+
+/*
+JSON = JavaScript Object Notation, *.json
+
+Schreiben Sie ein PHP-Skript, dass das JSON `{"Title": "Sommer mit Fremden", "Author": "Taichi Yamada", "Detail": {"Publisher": "Goldmann"}}` dekodiert und wie folgt ausgibt:
+
+Title: Sommer mit Fremden
+Author: Taichi Yamada
+Publisher: Goldmann
+*/
+
+// $data = [
+//     "Title" => "Sommer mit Fremden",
+//     "Author" => "Taichi Yamada",
+//     "Detail" => [
+//         "Publisher" => "Goldmann",
+//         "Noch mehr infos" => "bla",
+//         "noch mehr verschachtelt" => [
+//             "sdkfjhs" => [
+//                 "sdkjfghsdkhf" => [
+//                     "ISBN" => "3249872364786",
+//                     []
+//                 ]
+//             ]
+//         ]
+//     ]
+// ];
+
+// define("JSON_SNIPPET", json_encode($data)); // Konstante definieren
+// $json_decoded = json_decode(JSON_SNIPPET, true); // In ein assoziatives Array dekodiert
+
+// $print_key_value = fn ($val, $key) => print "$key: $val" . PHP_EOL; // Funktionsausdruck für die Ausgabe
+
+// array_walk_recursive($json_decoded, $print_key_value); // Höherwertige Funktion
+
+/*
+Nutzen Sie die Informationen von https://www.php.net/manual/en/function.fgetcsv.php um die durchschnittliche Höhe aller Bäume im Kataster Köln zu ermitteln.
+*/
+
+function fancy_output($text) {
+    $trees = ["🌲", "🌳", "🌴", "🎋"];
+    $tree_output = function() use ($text, $trees) {
+        for ($i=0; $i < strlen($text) / 2; $i++) { 
+            print $trees[array_rand($trees, 1)];
+        }
+        print PHP_EOL;
+    };
+    
+    print PHP_EOL;
+    $tree_output();
+    print $text . PHP_EOL;
+    $tree_output();
+    print PHP_EOL;
+}
+
+define("KEY_HEIGHT", 15);
+define("SKIP_ROWS", 1);
+
+$sum = 0;
+$rows = 0;
+
+if (($handle = fopen("./data/baumbestand_koeln_2020.csv", "r")) !== FALSE) {
+    while (($data = fgetcsv($handle, separator: ";")) !== FALSE) {
+        $rows++;
+
+        // Skip CSV header
+        if ($rows <= SKIP_ROWS) {
+            continue;
+        }
+
+        // I had to manually find out that tree height is stored in key 15
+        // (and is not called `H_HE` but `HHE`; data sources and docs are unreliable!)
+        $sum += $data[KEY_HEIGHT];
+    }
+
+    $meanHeight = $sum / ($rows - $skipRows);
+
+    fancy_output("Durchschnittliche Baumhöhe: $meanHeight");
+
+    fclose($handle);
+}
