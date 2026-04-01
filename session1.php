@@ -2,14 +2,14 @@
 
 // $land = "Schweiz";
 
-// $hauptstadt = match ($land) {
-//     "Syrien" => "Damaskus",
-//     "Russland" => "Moskau",
-//     "Ukraine" => "Kiew",
-//     "Kamerun" => "Yaoundé",
-//     "Deutschland" => "Berlin",
-//     default => "Sorry, dieses Land ist nicht mit im Videocall."
-// };
+$hauptstadt = match ($land) {
+    "Syrien" => "Damaskus",
+    "Russland" => "Moskau",
+    "Ukraine" => "Kiew",
+    "Kamerun" => "Yaoundé",
+    "Deutschland" => "Berlin",
+    default => "Sorry, dieses Land ist nicht mit im Videocall."
+};
 
 // print $hauptstadt . PHP_EOL;
 
