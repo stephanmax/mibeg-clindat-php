@@ -29,6 +29,9 @@ function which_is_smaller($n1, $n2) {
 	if ($n1 < $n2) {
     	return $n1;
     }
+    elseif ($n1 === $n2) {
+        return "Die beiden Zahlen sind gleich.";
+    }
     else {
     	return $n2;
     }
