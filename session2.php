@@ -4,10 +4,10 @@ Aufgabe: Schreiben Sie eine ===Funktion===, die den Namen
 einliest und diesen dann mit "Hallo, <Name>!" begrüßt.
  */
 
-// function greeter($greeting = "Hallo") {
-//     $name = readline("Geben Sie bitte Ihren Namen ein: ");
-//     print "$greeting, $name!" . PHP_EOL;
-// }
+function greeter($greeting = "Hallo") {
+    $name = readline("Geben Sie bitte Ihren Namen ein: ");
+    print "$greeting, $name!" . PHP_EOL;
+}
 
 // greeter();
 // greeter("Moin");
@@ -21,25 +21,25 @@ Antworten Sie mit einem entsprechenden Text.
 
 // Funktion mit Seiteneffekten, ohne Rückgabewert
 
-// function palindromeChecker() {
-//     $word = readline("Wort: ");
-//     $isPalindrome = strtolower($word) === strrev(strtolower($word));
+function palindromeChecker() {
+    $word = readline("Wort: ");
+    $isPalindrome = strtolower($word) === strrev(strtolower($word));
 
-//     if ($isPalindrome) {
-//         print "Das ist ein Palindrom!\n";
-//     }
-//     else {
-//         print "Das ist kein Palindrom!\n";
-//     }
-//     // return brauchen wir hier nicht
-// }
+    if ($isPalindrome) {
+        print "Das ist ein Palindrom!\n";
+    }
+    else {
+        print "Das ist kein Palindrom!\n";
+    }
+    // return brauchen wir hier nicht
+}
 
 // Pure Funktion mit Parameter und Rückgabewer, ohne Seiteneffekte
 
-// function is_palindrom(string $word): bool {
-//     $lower = strtolower($word);
-//     return $lower === strrev($lower);
-// }
+function is_palindrom(string $word): bool {
+    $lower = strtolower($word);
+    return $lower === strrev($lower);
+}
 
 // $input = "";
 // print "Tippen Sie 'Ende' um das Programm zu beenden.\n";
@@ -67,19 +67,19 @@ Antworten Sie mit einem entsprechenden Text.
 //     $num++;
 // }
 
-// function is_even_or_odd(int $num): string {
-//     return $num % 2 === 0 ? "$num ist gerade.\n" : "$num ist ungerade.\n";
-//     // Ternärer Operator
-//     // <bool> ? <true> : <false>
-//     /*
-//     if (<bool>) {
-//         return <true>;
-//     }
-//     else {
-//         return <false>;
-//     }
-//     */
-// }
+function is_even_or_odd(int $num): string {
+    return $num % 2 === 0 ? "$num ist gerade.\n" : "$num ist ungerade.\n";
+    // Ternärer Operator
+    // <bool> ? <true> : <false>
+    /*
+    if (<bool>) {
+        return <true>;
+    }
+    else {
+        return <false>;
+    }
+    */
+}
 
 // print is_even_or_odd(10);
 // print is_even_or_odd(15);
@@ -121,31 +121,6 @@ function isPrime($num) {
     return true;
 }
 
-while (true) {
-    $num = readline("Primzahl? ");
-    print isPrime($num) ? "Ja.\n" : "Nein.\n";
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 Schreiben Sie eine Funktion `isPrime(int $num): bool`, die
 für eine Zahl $num zurückgibt, ob sie eine Primzahl ist oder nicht.
@@ -153,6 +128,8 @@ für eine Zahl $num zurückgibt, ob sie eine Primzahl ist oder nicht.
 Primzahl = einen Zahl, die nur durch 1 und sich selbst restlos teilbar ist
 
 Primzahlen: 2, 3, 5, 7, 11, 13, 17, ...
+
+# Herangehensweise
 
 Ist 13 eine Primzahl?
 
