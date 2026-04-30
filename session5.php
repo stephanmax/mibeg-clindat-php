@@ -1,5 +1,7 @@
 <?php
-$nums = [78, 60, 62, 68, 71, 68, 73, 85, 66, 64, 76, 63, 75, 76, 73, 68, 62, 73, 72, 65, 74, 62, 62, 65, 64, 68, 73, 75, 79, 73];
+$nums = [78, 60, 62, 68, 71, 68, 73, 85, 66, 64, 76,
+    63, 75, 76, 73, 68, 62, 73, 72, 65, 74, 62, 62,
+    65, 64, 68, 73, 75, 79, 73];
 // // // Aufgabe: PHP-Skript, das für dieses Array Maximum, Minimum und Durchschnitt ermittelt.
 // // Sie sollen nur eine höherwertige Funktion nutzen.
 

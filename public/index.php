@@ -1,7 +1,7 @@
 <?php
+define("DATABASE_FILE", "trees.sqlite");
 
-define('FILENAME', 'data/demo.db');
-$connection = new PDO('sqlite:' . FILENAME);
+$connection = new PDO("sqlite:" . DATABASE_FILE);
 
 $sql = "SELECT germanName, height FROM trees WHERE height > :minHeight"; // 1
 $stmt = $connection->prepare($sql); // 2
@@ -47,28 +47,22 @@ echo "<p>Ergebnisse: {$stmt2->fetchColumn()}</p>";
         </tr>
     </thead>
     <tbody>
-        <?php while ($row = $stmt->fetch()): ?>
+
+        <?php while ($row = $stmt->fetch()): // { ?>
+
             <tr>
-                <td><?= $row["germanName"] ?></td>
-                <td><?= $row["height"] ?> m</td>
+                <td>
+                    <?= $row["germanName"] ?>
+                </td>
+                <td>
+                    <?= $row["height"] ?>
+                    m
+                </td>
             </tr>
+
         <?php endwhile; ?>
+
     </tbody>
 </table>
 </body>
 </html>
-
-<?php
-// $stmt = $connection->query("SELECT MAX(height) FROM trees");
-// $result = $stmt->fetch();
-
-/**
- * Aufgaben: Data Wrangling / Exploration
- * 
- * - Wie viele Bäume haben keinen Namen?
- * - Wie viele Bäume haben keine Höhe?
- * - Wie viele Bäume haben eine unglaubwürdige Höhe?
- * - Was ist die durchschnittliche Höhe aller Bäume mit glaubwürdiger Höhe?
- * - Welche Baumart ist die häufigste?
- */
-?>
