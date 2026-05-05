@@ -1,24 +1,25 @@
 <?php
+// Variablen in lowerCamelCase
 $isSubmitted = $_SERVER["REQUEST_METHOD"] === "POST";
-$nameSearch = "";
 
-define("DATABASE_FILE", "trees.sqlite");
-$connection = new PDO("sqlite:" . DATABASE_FILE);
-
-$sql = "SELECT DISTINCT germanName FROM trees WHERE germanName != '' ORDER BY germanName";
-$stmtTreeNames = $connection->prepare($sql);
-$stmtTreeNames->execute();
+// Funktionen in snake_case
+// function is_submitted() {}
 
 if ($isSubmitted) {
-    $nameSearch = filter_input(INPUT_POST, "germanName");
+    $minHeight = filter_input(INPUT_POST, "height");
 
-    $sql = "SELECT germanName, height FROM trees WHERE germanName = ?";
-    $stmt = $connection->prepare($sql);
-    $stmt->execute([$nameSearch]);
+    // 1
+    $connection = new PDO("sqlite:trees.sqlite");
 
-    $sql = "SELECT COUNT(*) FROM trees WHERE germanName = ?";
-    $stmtResults = $connection->prepare($sql);
-    $stmtResults->execute([$nameSearch]);
+    // 2
+    $sql = "SELECT germanName, height FROM trees WHERE height > :minHeight"; // a
+    $stmtTrees = $connection->prepare($sql); // b
+    $stmtTrees->execute(["minHeight" => $minHeight]); // c
+
+    // 2
+    $sql = "SELECT COUNT(*) FROM trees WHERE height > :minHeight"; // a
+    $stmtNumberOfResults = $connection->prepare($sql); // b
+    $stmtNumberOfResults->execute(["minHeight" => $minHeight]); // c
 }
 ?>
 
@@ -26,9 +27,6 @@ if ($isSubmitted) {
 <head>
     <title>Baumkataster Köln 2020</title>
     <style>
-        body {
-            font-family: sans-serif;
-        }
         table {
             border-collapse: collapse;
             border: 2px solid rgb(140 140 140);
@@ -49,23 +47,15 @@ if ($isSubmitted) {
 </head>
 <body>
     <h1>Bäume in Köln</h1>
-    <p>Suchen Sie nach Bäumen mit einem bestimmten Namen:</p>
+    <p>Suchen Sie nach Bäumen einer bestimmten Größe:</p>
     <form method="post">
-        <select name="germanName">
-            <?php while ($row = $stmtTreeNames->fetch()): ?>
-                <option
-                    value="<?= $row["germanName"] ?>"
-                    <?= $row["germanName"] === $nameSearch ? "selected" : "" ?>
-                >
-                    <?= $row["germanName"] ?>
-                </option>
-            <?php endwhile; ?>
-        </select>
+        <input name="height" value="<?= $minHeight ?>" type="number" placeholder="Größe in m">
         <input type="submit">
     </form>
 
     <?php if ($isSubmitted): ?>
-    <p><b><?= $stmtResults->fetchColumn() ?></b> Ergebnisse</p>
+    <!-- 3 -->
+    <p><b><?= $stmtNumberOfResults->fetchColumn() ?></b> Ergebnisse</p>
     <table>
         <thead>
             <tr>
@@ -75,7 +65,8 @@ if ($isSubmitted) {
         </thead>
         <tbody>
 
-            <?php while ($row = $stmt->fetch()): ?>
+            <!-- 3 -->
+            <?php while ($row = $stmtTrees->fetch()): ?>
 
                 <tr>
                     <td>
