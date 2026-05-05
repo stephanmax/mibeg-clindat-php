@@ -1,18 +1,21 @@
 <?php
-define("DATABASE_FILE", "trees.sqlite");
+$isSubmitted = $_SERVER["REQUEST_METHOD"] === "POST";
 
-$connection = new PDO("sqlite:" . DATABASE_FILE);
+if ($isSubmitted) {
+    $minHeight = filter_input(INPUT_POST, "height");
 
-$sql = "SELECT germanName, height FROM trees WHERE height > :minHeight"; // 1
-$stmt = $connection->prepare($sql); // 2
-$stmt->execute(["minHeight" => 30]); // 3
+    define("DATABASE_FILE", "trees.sqlite");
 
-$sql = "SELECT COUNT(*) FROM trees WHERE height > :minHeight"; // 1
-$stmt2 = $connection->prepare($sql); // 2
-$stmt2->execute(["minHeight" => 30]); // 3
+    $connection = new PDO("sqlite:" . DATABASE_FILE);
 
-echo "<p>Ergebnisse: {$stmt2->fetchColumn()}</p>";
+    $sql = "SELECT germanName, height FROM trees WHERE height > :minHeight"; // 1
+    $stmt = $connection->prepare($sql); // 2
+    $stmt->execute(["minHeight" => $minHeight]); // 3
 
+    $sql = "SELECT COUNT(*) FROM trees WHERE height > :minHeight"; // 1
+    $stmt2 = $connection->prepare($sql); // 2
+    $stmt2->execute(["minHeight" => $minHeight]); // 3
+}
 ?>
 
 <!doctype html>
@@ -38,31 +41,41 @@ echo "<p>Ergebnisse: {$stmt2->fetchColumn()}</p>";
     </style>
 </head>
 <body>
+    <h1>Bäume in Köln</h1>
+    <p>Suchen Sie nach Bäumen einer bestimmten Größe:</p>
+    <form method="post">
+        <input name="height" value="<?= $minHeight ?>" type="number" placeholder="Größe in m">
+        <input type="submit">
+    </form>
 
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Höhe</th>
-        </tr>
-    </thead>
-    <tbody>
+    <p><b><?= $stmt2->fetchColumn() ?></b> Ergebnisse</p>
 
-        <?php while ($row = $stmt->fetch()): // { ?>
-
+    <?php if ($isSubmitted): ?>
+    <table>
+        <thead>
             <tr>
-                <td>
-                    <?= $row["germanName"] ?>
-                </td>
-                <td>
-                    <?= $row["height"] ?>
-                    m
-                </td>
+                <th>Name</th>
+                <th>Höhe</th>
             </tr>
+        </thead>
+        <tbody>
 
-        <?php endwhile; ?>
+            <?php while ($row = $stmt->fetch()): ?>
 
-    </tbody>
-</table>
+                <tr>
+                    <td>
+                        <?= $row["germanName"] ?>
+                    </td>
+                    <td>
+                        <?= $row["height"] ?>
+                        m
+                    </td>
+                </tr>
+
+            <?php endwhile; ?>
+
+        </tbody>
+    </table>
+    <?php endif; ?>
 </body>
 </html>
