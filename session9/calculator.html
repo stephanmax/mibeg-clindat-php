@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+</head>
+<body>
+    <!-- 1 -->
+    <h1>Calculator</h1>
+
+    <input id="inA" type="number">
+    <select id="ops">
+        <!-- 🤯🤯🤯 -->
+    </select>
+    <input id="inB" type="number">
+    = <span id="result"></span>
+
+    <script>
+        // 2
+        const inA = document.querySelector("#inA");
+        const inB = document.querySelector("#inB");
+        const ops = document.querySelector("#ops");
+        const output = document.querySelector("#result");
+
+        // 3
+
+        const operators = ["+", "-", "*", "/"];
+        const calculations = {
+            "+": (a, b) => a + b,
+            "-": (a, b) => a - b,
+            "*": (a, b) => a * b,
+            "/": (a, b) => a / b
+        };
+
+        for (const operator of operators) {
+            const option = document.createElement("option");
+            option.value = operator;
+            option.textContent = operator;
+            ops.appendChild(option);
+        }
+
+        function calculate() {
+            const op = ops.value;
+            const calc = calculations[op];
+            const result = calc(inA.valueAsNumber, inB.valueAsNumber);
+            if (!isNaN(result)) {
+                output.textContent = result;
+            }
+        }
+
+        // 4
+
+        ops.addEventListener("change", calculate);
+        inA.addEventListener("change", calculate);
+        inB.addEventListener("change", calculate);
+    </script>
+</body>
+</html>

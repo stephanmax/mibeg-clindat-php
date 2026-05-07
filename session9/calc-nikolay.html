@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+</head>
+<body>
+    <h1>Calculator</h1>
+
+    <label>
+        Eingabe
+        <input type="number" id="input">
+    </label>
+    <button>+</button>
+    <p>Ergebnis: <span id="result"></span></p>
+
+    <script>
+        const input = document.querySelector("#input");
+        const button = document.querySelector("button");
+        const output = document.querySelector("#result");
+
+        let a, b;
+        let secondNumber = false;
+
+        button.addEventListener(
+            "click",
+            () => {
+                if (!secondNumber) {
+                    a = input.valueAsNumber;
+                    button.textContent = '=';
+                    input.value = "";
+                    input.focus();
+                    secondNumber = true;
+                }
+                else {
+                    b = input.valueAsNumber;
+                    output.textContent = a + b;
+                }
+            }
+        )
+    </script>
+</body>
+</html>

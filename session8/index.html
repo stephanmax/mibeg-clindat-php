@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intro to JavaScript</title>
+</head>
+<body>
+    <script>
+        // Einzeiliger Kommentar
+        /* 
+            Mehrzeilige Kommentare
+        */
+
+        // Variablen und Konstanten
+        let variable = 12;
+        const CONSTANT = 3.14;
+
+        // PHP: print, echo, var_dump()
+        console.log("Hallo, Welt!");
+
+        // Operatoren, Präzedenz, Typen sehr ähnlich zu PHP
+
+        // Typen: Number, Boolean, String
+        console.log(typeof variable);
+
+        // PHP: NULL
+        // JavaScript: undefined, null
+
+        // Funktionen
+        function sum(a, b) {
+            return a + b;
+        }
+        console.log(sum(10, 5));
+
+        // Anonyme Funktion
+        const subtract = function(a, b) {
+            return a - b;
+        };
+        console.log(subtract(30, 10));
+
+        // Fat-Arrow-Funktion
+        const multiply = (a, b) => a * b;
+        console.log(multiply(14, 3));
+
+        // Höherwertige Funktionen
+        // Funktionen können andere Funktionen zurückgeben oder
+        // als Parameter aufnehmen
+        function makeIncrementer(inc) {
+            return (x) => x + inc;
+        }
+
+        // Konditional
+        if (5 < 10) {
+            console.log("5 is less than 10");
+        }
+
+        // Alternative: ternärer Operator
+        age = 15;
+        const greeting = age > 18
+            ? "Willkommen, Sie sind volljährig!"
+            : "Sie sind zu jung.";
+        console.log(greeting);
+
+        // Schleifen
+        for (let i = 1; i <= 10; i += 2) {
+            console.log(i);
+        }
+
+        // while (condition) {
+            
+        // }
+
+        // do {
+            
+        // } while (condition);
+
+        let arr = [5, false, "Hallo"];
+        console.log(arr);
+        console.log(arr[2]);
+
+        let obj = {
+            0: "Hallo",
+            "test": {
+                "name": "Stephan",
+                "age": 38
+            },
+            4: false
+        };
+
+        console.log(obj);
+        console.log(obj["test"]["name"]);
+    </script>
+</body>
+</html>

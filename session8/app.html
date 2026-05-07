@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My App</title>
+</head>
+<body>
+    <h1>My Wonderful App</h1>
+    <button>Increase counter</button>
+    <p>Counter: <span>0</span></p>
+
+    <script>
+        // 1) DOM API
+        const increaseButton = document.querySelector("button");
+        const counterOutput = document.querySelector("span");
+        let counter = 0;
+
+        function count() {
+            counter += 1;
+            counterOutput.innerText = counter;
+        }
+
+        // 2) Event-driven programming
+        //      Ereignis-gesteuerte Programmierung
+        increaseButton.addEventListener("click", count);
+    </script>
+</body>
+</html>
