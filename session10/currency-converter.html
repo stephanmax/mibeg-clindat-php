@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <link rel="icon" href="data:,">
+    <style>
+        body {
+            font-family: monospace;
+            font-size: 125%;
+        }
+        input, select {
+            font-family: inherit;
+        }
+    </style>
+</head>
+<body>
+    <fieldset>
+        <legend>Currency Converter</legend>
+        <input type="number" min="0" value="1" id="amount"> € =
+        <select id="conversions">
+        </select>
+        <p><small>Exchange rates updated: <span id="updated"></span></small></p>
+    </fieldset>
+
+    <script type="module">
+        const amount = document.querySelector("#amount");
+        const conversions = document.querySelector("#conversions");
+        const updated = document.querySelector("#updated");
+        const sourceCurrenct = "EUR";
+        const targetCurrency = "USD";
+
+        const response = await fetch("/get_exchange_rate.php");
+        const result = await response.json();
+
+        updated.textContent = new Date(result.time_last_update_utc).toLocaleString();
+
+        const renderConversions = () => {
+            conversions.innerHTML = "";
+            for (const [currency, rate] of Object.entries(result.rates)) {
+                if (currency === sourceCurrenct) {
+                    continue;
+                }
+                const option = document.createElement("option");
+                const converted = (Number(rate) * amount.valueAsNumber).toFixed(2);
+                option.textContent = `${currency} ${converted}`;
+                if (currency === targetCurrency) {
+                    option.selected = true;
+                }
+                conversions.appendChild(option);
+            }
+        };
+
+        amount.addEventListener("keyup", () => {
+            if (amount.value === "") {
+                amount.value = "0";
+            }
+            renderConversions();
+        });
+
+        amount.addEventListener("keydown", (event) => {
+            if (event.key === "-") {
+                event.preventDefault();
+            }
+        });
+
+        renderConversions();
+    </script>
+</body>
+</html>
