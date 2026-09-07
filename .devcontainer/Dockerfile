@@ -15,11 +15,7 @@ RUN echo "Adding updated PHP sources" \
 
 # Install some common packages
 RUN echo "Installing common packages" \
-    && apt-get install git imagemagick nano openssh-server sqlite3 wget unzip -yq
-
-# Modify ImageMagick policy to allow PDF read/write
-RUN echo "Modifying ImageMagick policy to allow PDF read/write" \
-    && sed -i 's/<policy domain="coder" rights="none" pattern="PDF" \/>/<policy domain="coder" rights="read|write" pattern="PDF" \/>/g' /etc/ImageMagick-6/policy.xml
+    && apt-get install git nano openssh-server sqlite3 wget unzip -yq
 
 # Install PHP CLI with some extensions for Drupal development
 RUN echo "Installing PHP CLI with extensions for Drupal development" \
