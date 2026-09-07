@@ -1,3 +1,3 @@
-# PHP Codespace für CLinDat 31 (mibeg Institute)
+# PHP Codespace (Clinical Data Management)
 
-Eine PHP-Spielwiese zum Programmieren und Ausprobieren
+Eine PHP-Spielwiese zum Programmieren und Ausprobieren.
