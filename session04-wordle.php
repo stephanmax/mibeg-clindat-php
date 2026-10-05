@@ -38,6 +38,7 @@ do {
 
     if (strlen($input) !== NUM_OF_LETTERS) {
         print "Bitte " . NUM_OF_LETTERS . " Buchstaben eingeben!\n";
+        $success = false;
         continue;
     }
 

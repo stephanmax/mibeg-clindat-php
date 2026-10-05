@@ -27,3 +27,7 @@ function fizzbuzz($num) {
 		print (!empty($fizzBuzz) ? $fizzBuzz : $i) . PHP_EOL;
 	}
 }
+
+function filter_even($num) {
+    return $num % 2 === 0;
+}

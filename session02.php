@@ -155,6 +155,8 @@ Funktion is_even_or_odd(num):
 
 // print $num . PHP_EOL;
 
+// Referenzen
+
 // $num = 42;
 
 // function test_func(&$peter) {
