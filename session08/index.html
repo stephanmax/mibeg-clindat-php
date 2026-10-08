@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session 08</title>
+    <style>
+        svg {
+            width: 2em;
+            height: 2em;
+        }
+        button {
+            font-size: 2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Counter App</h1>
+
+    <div>
+        <p>Zählstand: <span id="currentNum">0</span></p>
+        <input type="number" value="1" id="inc">
+        <button id="btn1">
+            <!-- <svg viewBox="0 0 128 128"><path d="M64 46c-50 0-39 67 0 67Zc50 0 39 67 0 67M48 49C34 18 94 18 80 49M56 27 50 15m28 0-6 12M33 63H25L14 46M95 63h8l11-17M31 83H23L15 93m28 12H34l-9 8m60-8h9l9 8M97 84h8l8 9"/></svg> -->
+             🐢
+        </button>
+    </div>
+
+    <script>
+        // 0: Zustand, welche Daten muss die App handhaben
+        let num = 0;
+        let increment = 1;
+
+        // 1: Womit soll etwas passieren?
+        const btn = document.querySelector("#btn1");
+        const output = document.querySelector("#currentNum");
+        const input = document.querySelector("#inc");
+
+        // 2: Was soll passieren?
+        function whenButtonClicked() {
+            // num = num + 1;
+            // num += 1;
+            increment = Number(input.value);
+            num += increment;
+            // num = num + increment;
+            output.textContent = num;
+        }
+
+        // 3: Es passiert sobald …
+        btn.addEventListener(
+            "click", // der Button gedrückt wird
+            whenButtonClicked
+        );
+    </script>
+</body>
+</html>

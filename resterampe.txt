@@ -1,0 +1,41 @@
+// // Ab hier: JavaScript-Code
+
+        // // Variablen und Konstanten
+        // let title = "Unsere tolle Web-Applikation";
+        // const num1 = 10;
+        // const num2 = 23;
+
+        // // print, echo, var_dump
+        // // Wo sehen wir die Ausgabe von console.log?
+        // console.log(title);
+
+        // // String-Konkatenation
+        // let greeting = "Hello, ";
+        // let name = "Stephan";
+        // console.log(greeting + name);
+
+        // if (3 < 5) {
+        //     console.log("3 ist kleiner als 5");
+        // }
+        // else {
+
+        // }
+
+        // for (let index = 0; index < 10; index++) {
+        //     console.log(index);
+        // }
+
+        // function add(a, b) {
+        //     return a+b;
+        // }
+
+        // function sub(a, b) {
+        //     return a-b;
+        // }
+
+        // const shoppingList = ["Milch", "Eier", "Gurke", true, 15, 3.5];
+
+        // for (let index = 0; index < shoppingList.length; index++) {
+        //     const element = shoppingList[index];
+        //     console.log(element);
+        // }
