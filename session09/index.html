@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visiten-Termine</title>
+</head>
+<body>
+    <h1>Visiten-Termine</h1>
+
+    <form id="termine">
+        <label for="dateStart">
+            Startdatum
+            <input type="date" id="dateStart">
+        </label>
+        <br><br>
+        <label for="numVisits">
+            Terminanzahl
+            <input type="number" id="numVisits">
+        </label>
+        <br><br>
+        <label for="period">
+            Periode (alle x Tagen)
+            <input type="text" id="period">
+        </label>
+        <br><br>
+        <label for="timeWindow">
+            Zeitfenster +/- Tage
+            <input type="number" id="timeWindow">
+        </label>
+        <br><br>
+        <ol id="visits"></ol> <!--  Liste -->
+    </form>
+
+    <script>
+        // 0: Zustand, welche Daten muss die App handhaben
+        let dateStart;
+        let numVisits;
+        let period;
+        let timeWindow;
+
+        // 1: Womit soll etwas passieren?
+        const inputDateStart = document.querySelector("#dateStart");
+        const inputNumVisits = document.querySelector("#numVisits");
+        const inputPeriod = document.querySelector("#period");
+        const inputTimeWindow = document.querySelector("#timeWindow");
+        const olVisits = document.querySelector("#visits");
+
+        // 2: Was soll passieren?
+        function generateVisits() {
+            // Guarding if clause
+            if (inputDateStart.value === "" || inputNumVisits.value === "" || inputPeriod.value === "" || inputTimeWindow.value === "") {
+                return;
+            }
+            
+            olVisits.innerHTML = "";
+            
+            dateStart = new Date(inputDateStart.value);
+            dateStartInMs = dateStart.valueOf();
+            numVisits = Number(inputNumVisits.value);
+            period = Number(inputPeriod.value);
+            timeWindow = Number(inputTimeWindow.value);
+
+            const visits = [];
+
+            for(let i = 0; i < numVisits; i++) {
+                const DAY_IN_MS = 24 * 60 * 60 * 1000;
+
+                const currentDate = dateStartInMs + period * i * DAY_IN_MS;
+                const startDate = currentDate - timeWindow * DAY_IN_MS;
+                const endDate = currentDate + timeWindow * DAY_IN_MS;
+
+                visits.push(
+                    new Date(startDate).toLocaleDateString("de") +
+                    "–" +
+                    new Date(endDate).toLocaleDateString("de")
+                );
+            }
+
+            // Ergebnisse in HTML darstellen:
+            for (let i = 0; i < visits.length; i++) {
+                olVisits.insertAdjacentHTML("beforeend", "<li>" + visits[i] + "</li>");
+            }
+        }
+
+        // 3: Es passiert sobald …
+        inputDateStart.addEventListener(
+            "change",
+            generateVisits
+        );
+        inputNumVisits.addEventListener(
+            "change",
+            generateVisits
+        );
+        inputPeriod.addEventListener(
+            "change",
+            generateVisits
+        );
+        inputTimeWindow.addEventListener(
+            "change",
+            generateVisits
+        );
+    </script>
+</body>
+</html>
