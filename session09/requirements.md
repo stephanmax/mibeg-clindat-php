@@ -13,8 +13,9 @@
     - (optionale) Alerts
         - Upcoming/Nahende Termine
         - Versäumnis-Meldung
-    - Zustand im Browser Reload-sicher abspeichern
-    - Termine als wahrgenommen abchecken
-    - Button kann erst betätigt werden, wenn alle Input ausgefüllt sind ✅
+    - Zustand im Browser Reload-sicher abspeichern ✅
+    - Termine als wahrgenommen abhaken + folgende neu berechnen
+    - Button kann erst betätigt werden, wenn alle Inputs ausgefüllt sind ✅
     - Kalender-Anbindung
         - ics-Import/Export
+    - Wochenende rausfiltern

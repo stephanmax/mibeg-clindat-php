@@ -4,6 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visiten-Termine</title>
+    <style>
+        body {
+            font-family: system-ui;
+        }
+        #visits {
+            font-variant-numeric: tabular-nums;
+            list-style: none;
+            width: fit-content;
+        }
+        li {
+            padding: 0.4em;
+        }
+        li + li {
+            margin-top: 0.5em;
+        }
+        li:nth-child(2n+1) {
+            background: #dedede;
+        }
+        li input {
+            margin-left: 1em;
+        }
+    </style>
 </head>
 <body>
     <h1>Visiten-Termine</h1>
@@ -29,10 +51,15 @@
             <input type="number" id="timeWindow">
         </label>
         <br><br>
+        <button id="reset" type="button">Zurücksetzen</button>
+        <button id="print" type="button">Drucken</button>
+        <br><br>
         <ol id="visits"></ol> <!--  Liste -->
     </form>
 
     <script>
+        const storageKey = "visitenTermine";
+
         // 0: Zustand, welche Daten muss die App handhaben
         let dateStart;
         let numVisits;
@@ -45,6 +72,8 @@
         const inputPeriod = document.querySelector("#period");
         const inputTimeWindow = document.querySelector("#timeWindow");
         const olVisits = document.querySelector("#visits");
+        const buttonReset = document.querySelector("#reset");
+        const buttonPrint = document.querySelector("#print");
 
         // 2: Was soll passieren?
         function generateVisits() {
@@ -67,20 +96,71 @@
                 const DAY_IN_MS = 24 * 60 * 60 * 1000;
 
                 const currentDate = dateStartInMs + period * i * DAY_IN_MS;
+
+                // Erste Iteration der Schleife === Start-Datum
+                if (i === 0) {
+                    visits.push({
+                        startDate: currentDate,
+                        endDate: currentDate
+                    });
+                    continue;
+                }
+
                 const startDate = currentDate - timeWindow * DAY_IN_MS;
                 const endDate = currentDate + timeWindow * DAY_IN_MS;
 
-                visits.push(
-                    new Date(startDate).toLocaleDateString("de") +
-                    "–" +
-                    new Date(endDate).toLocaleDateString("de")
-                );
+                visits.push({
+                    startDate,
+                    endDate
+                });
             }
 
             // Ergebnisse in HTML darstellen:
             for (let i = 0; i < visits.length; i++) {
-                olVisits.insertAdjacentHTML("beforeend", "<li>" + visits[i] + "</li>");
+                let html;
+                const options = {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                };
+
+                if (i === 0) {
+                    html = "<li>" + new Date(visits[i].startDate).toLocaleString("de", options) + "</li>";
+                }
+                else {
+                    const startDateISO = new Date(visits[i].startDate).toISOString().substring(0, 10);
+                    const endDateISO = new Date(visits[i].endDate).toISOString().substring(0, 10);
+                    html = "<li>" +
+                        new Date(visits[i].startDate).toLocaleString("de", options) +
+                        " – " +
+                        new Date(visits[i].endDate).toLocaleString("de", options) +
+                        "<input type='date' min='" + startDateISO + "' max='" + endDateISO + "'></li>";
+                }
+
+                olVisits.insertAdjacentHTML(
+                    "beforeend",
+                    html
+                );
             }
+
+            // Daten speichern
+            // a. Daten als Objekt anlegen
+            const state = {
+                dateStart,
+                numVisits,
+                period,
+                timeWindow,
+                visits
+            };
+            // b. Datenobjekt in einen String konvertieren
+            const stateString = JSON.stringify(state);
+            // c. Datenstring in localStorage speichern
+            localStorage.setItem(storageKey, stateString);
+        }
+
+        function reset() {
+            localStorage.clear();
+            location.reload();
         }
 
         // 3: Es passiert sobald …
@@ -100,6 +180,25 @@
             "change",
             generateVisits
         );
+        buttonReset.addEventListener(
+            "click",
+            reset
+        );
+        buttonPrint.addEventListener(
+            "click",
+            () => { print(); }
+        );
+
+        // Daten laden
+        const stateLoaded = JSON.parse(localStorage.getItem(storageKey))
+        // Wenn Daten vorhanden, dann …
+        if (stateLoaded !== null) {
+            inputDateStart.value = stateLoaded.dateStart.substring(0, 10);
+            inputNumVisits.value = stateLoaded.numVisits;
+            inputPeriod.value = stateLoaded.period;
+            inputTimeWindow.value = stateLoaded.timeWindow;
+            generateVisits();
+        }
     </script>
 </body>
 </html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greeter</title>
+</head>
+<body>
+    <p id="greeting">Hallo!</p>
+    <label id="input">
+        Dein Name: 
+        <input type="text" id="name">
+        <button id="send">Absenden</button>
+    </label>
+
+    <script>
+        // 0: Zustand
+        let name;
+
+        // 1: Womit soll etwas passieren?
+        const pGreeting = document.querySelector("#greeting");
+        const labelInput = document.querySelector("#input");
+        const inputName = document.querySelector("#name");
+        const buttonSend = document.querySelector("#send");
+
+        // DRY = Don’t Repeat Yourself
+        // Code-Duplikation vermeiden durch den Einsatz von Funktionen
+
+        // WET = Write Everything Twice (Das wollen wir nicht!!!)
+        // KISS = Keep it simple, silly!
+
+        function doTheGreeting(name) {
+            pGreeting.textContent = "Herzlich Willkommen, " + name + "! Schön, dass du da bist.";
+            labelInput.style.display = "none";
+        }
+
+        if (localStorage.getItem("name") !== null) {
+            doTheGreeting(localStorage.getItem("name"));
+        }
+
+        // 2: Was soll passieren?
+        function process() {
+            name = inputName.value;
+            
+            if (name === "") {
+                return;
+            }
+
+            doTheGreeting(name);
+            localStorage.setItem("name", name);
+        }
+
+        // 3: Es passiert sobald …
+        buttonSend.addEventListener(
+            "click",
+            process
+        );
+    </script>
+</body>
+</html>
