@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <style>
+        body {
+            font-family: monospace;
+            font-size: 125%;
+        }
+        input, select {
+            font-family: inherit;
+        }
+        input {
+            width: 5em;
+        }
+        select {
+            width: 10em;
+        }
+    </style>
+</head>
+<body>
+    <fieldset>
+        <legend>Currency Converter</legend>
+        <input type="number" min="0" value="1" id="amount">
+        <select id="currencies"></select>
+        =
+        <select id="conversions"></select>
+        <p><small>Exchange rates updated: <span id="updated"></span></small></p>
+    </fieldset>
+
+    <script type="module">
+        // 0: Zustand
+        let currencySource = "EUR";
+        let currencyTarget = "USD";
+
+        // 1: Womit soll etwas geschehen?
+        const inputAmount = document.querySelector("#amount");
+        const selectCurrencies = document.querySelector("#currencies");
+        const selectConversions = document.querySelector("#conversions");
+        const spanUpdated = document.querySelector("#updated");
+
+        // 2: Was soll passieren
+        async function convert() {
+            selectConversions.innerHTML = "";
+            selectCurrencies.innerHTML = "";
+
+            const response = await fetch("/get_exchange_rate.php?currency=" + currencySource);
+            const result = await response.json();
+
+            spanUpdated.textContent = new Date(result.time_last_update_utc).toLocaleString("de") + " (local time)";
+
+            for (const [currency, rate] of Object.entries(result.rates)) {
+                // Befüllen select für Währungen
+                const optionCurrency = document.createElement("option");
+                optionCurrency.textContent = currency;
+                optionCurrency.value = currency;
+                if (currency === currencySource) {
+                    optionCurrency.selected = true;
+                }
+                selectCurrencies.appendChild(optionCurrency);
+
+                // Befüllen select für Umrechnungen
+                if (currency === currencySource) {
+                    continue;
+                }
+                const optionConversion = document.createElement("option");
+                const converted = (Number(inputAmount.value) * Number(rate)).toFixed(2);
+                // Alternativ als Template-Literal mit Backticks: `${currency} ${converted}`
+                optionConversion.textContent = currency + " " + converted;
+                optionConversion.value = currency;
+                if (currency === currencyTarget) {
+                    optionConversion.selected = true;
+                }
+                selectConversions.appendChild(optionConversion);
+            }
+        }
+
+        function forbidNegativeNumbers(event) {
+            if (event.key === "-") {
+                event.preventDefault();
+            }
+        }
+
+        // 3: Es soll passieren, sobald …
+        inputAmount.addEventListener(
+            "keyup",
+            convert
+        );
+
+        inputAmount.addEventListener(
+            "keydown",
+            forbidNegativeNumbers
+        );
+
+        selectCurrencies.addEventListener(
+            "change",
+            (event) => {
+                currencySource = event.target.value;
+                convert();
+            }
+        );
+
+        selectConversions.addEventListener(
+            "change",
+            (event) => {
+                currencyTarget = event.target.value;
+            }
+        )
+
+        convert();
+    </script>
+</body>
+</html>
